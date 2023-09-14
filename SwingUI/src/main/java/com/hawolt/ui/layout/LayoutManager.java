@@ -3,10 +3,10 @@ package com.hawolt.ui.layout;
 import com.hawolt.LeagueClientUI;
 import com.hawolt.client.LeagueClient;
 import com.hawolt.ui.champselect.ChampSelectUI;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import com.hawolt.ui.github.ReleaseWindow;
 import com.hawolt.ui.queue.QueueWindow;
 import com.hawolt.ui.store.StoreWindow;
-import com.hawolt.util.panel.ChildUIComponent;
 
 import java.awt.*;
 

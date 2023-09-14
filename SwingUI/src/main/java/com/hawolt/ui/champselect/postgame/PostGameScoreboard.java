@@ -1,7 +1,7 @@
 package com.hawolt.ui.champselect.postgame;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

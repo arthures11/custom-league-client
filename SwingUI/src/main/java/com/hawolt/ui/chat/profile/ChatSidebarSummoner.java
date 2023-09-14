@@ -1,7 +1,7 @@
 package com.hawolt.ui.chat.profile;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

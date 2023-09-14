@@ -4,11 +4,11 @@ import com.hawolt.LeagueClientUI;
 import com.hawolt.client.resources.ledge.leagues.objects.LeagueNotification;
 import com.hawolt.http.layer.IResponse;
 import com.hawolt.logger.Logger;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.ui.layout.LayoutComponent;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
 import org.json.JSONObject;
 
 import javax.swing.border.EmptyBorder;
@@ -34,7 +34,7 @@ public class PostGameUI extends ChildUIComponent implements ActionListener {
         this.setBorder(new EmptyBorder(5, 5, 5, 5));
         this.add(header = new PostGameHeader(), BorderLayout.NORTH);
         this.add(scoreboard = new PostGameScoreboard(), BorderLayout.CENTER);
-        this.add(close = new LFlatButton("Play Again", LTextAlign.CENTER, LHighlightType.COMPONENT), BorderLayout.SOUTH);
+        this.add(close = new LFlatButton("Play Again", LTextAlign.CENTER, HighlightType.COMPONENT), BorderLayout.SOUTH);
         this.close.addActionListener(this);
         this.leagueClientUI = leagueClientUI;
     }

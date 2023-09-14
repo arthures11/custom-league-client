@@ -1,7 +1,7 @@
 package com.hawolt.ui.profile;
 
 import com.hawolt.LeagueClientUI;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import java.awt.*;
 

@@ -1,6 +1,6 @@
 package com.hawolt.ui;
 
-import com.hawolt.util.panel.MainUIComponent;
+import com.hawolt.ui.generic.utility.MainUIComponent;
 
 import javax.swing.*;
 import java.awt.*;

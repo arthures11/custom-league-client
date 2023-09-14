@@ -1,11 +1,11 @@
 package com.hawolt.ui.chat.friendlist;
 
-import com.hawolt.ui.custom.LHintTextField;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LHintTextField;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 
 import javax.swing.border.EmptyBorder;
@@ -31,7 +31,7 @@ public class ChatSidebarFriendEssentials extends ChildUIComponent implements Doc
         input.setBackground(ColorPalette.accentColor);
         add(input, BorderLayout.CENTER);
         input.getDocument().addDocumentListener(this);
-        LFlatButton add = new LFlatButton("ADD", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton add = new LFlatButton("ADD", LTextAlign.CENTER, HighlightType.COMPONENT);
         add.setRounding(ColorPalette.BUTTON_SMALL_ROUNDING);
         add.setFocusPainted(false);
         add.addActionListener(listener -> {

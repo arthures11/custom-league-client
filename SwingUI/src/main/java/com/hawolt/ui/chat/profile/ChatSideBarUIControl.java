@@ -1,10 +1,10 @@
 package com.hawolt.ui.chat.profile;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,13 +59,13 @@ public class ChatSideBarUIControl extends JComponent implements ActionListener {
 
     private void setup() {
         buttons.setBackground(ColorPalette.accentColor);
-        minimize = new LFlatButton("—", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        minimize = new LFlatButton("—", LTextAlign.CENTER, HighlightType.COMPONENT);
         minimize.addActionListener(this);
         buttons.add(minimize);
-        maximize = new LFlatButton("▭", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        maximize = new LFlatButton("▭", LTextAlign.CENTER, HighlightType.COMPONENT);
         maximize.addActionListener(this);
         buttons.add(maximize);
-        close = new LFlatButton("×", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        close = new LFlatButton("×", LTextAlign.CENTER, HighlightType.COMPONENT);
         close.addActionListener(this);
         close.setHighlightColor(Color.RED);
         buttons.add(close);

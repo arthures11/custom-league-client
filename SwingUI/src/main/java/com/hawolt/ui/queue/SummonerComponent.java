@@ -5,10 +5,10 @@ import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.client.resources.ledge.parties.objects.PartyParticipant;
 import com.hawolt.client.resources.ledge.summoner.objects.Summoner;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.themes.LThemeChoice;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.themes.impl.LThemeChoice;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.util.paint.PaintHelper;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;

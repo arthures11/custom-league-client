@@ -7,11 +7,11 @@ import com.hawolt.ui.champselect.data.ChampSelectTeamMember;
 import com.hawolt.ui.champselect.data.ChampSelectTeamType;
 import com.hawolt.ui.champselect.data.TeamMemberFunction;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.ui.custom.LHintTextField;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.themes.LThemeChoice;
-import com.hawolt.util.ui.LScrollPane;
-import com.hawolt.util.ui.SmartScroller;
+import com.hawolt.ui.generic.component.LHintTextField;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.themes.impl.LThemeChoice;
+import com.hawolt.ui.generic.utility.SmartScroller;
 import com.hawolt.xmpp.event.objects.conversation.history.impl.IncomingMessage;
 import com.hawolt.xmpp.event.objects.presence.impl.JoinMucPresence;
 

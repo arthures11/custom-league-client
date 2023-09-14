@@ -5,7 +5,7 @@ import com.hawolt.client.LeagueClient;
 import com.hawolt.client.resources.ledge.gsm.GameServiceMessageLedge;
 import com.hawolt.generic.data.Platform;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.Launcher;
+import com.hawolt.util.other.Launcher;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -18,12 +18,11 @@ import java.io.IOException;
 public class ActiveGameInformation implements Runnable {
     private final GameServiceMessageLedge ledge;
     private final LeagueClientUI leagueClientUI;
-    private final LeagueClient client;
     private final Platform platform;
 
     public ActiveGameInformation(LeagueClientUI leagueClientUI) {
         this.leagueClientUI = leagueClientUI;
-        this.client = leagueClientUI.getLeagueClient();
+        LeagueClient client = leagueClientUI.getLeagueClient();
         this.ledge = client.getLedge().getGameServiceMessage();
         this.platform = client.getPlayerPlatform();
     }

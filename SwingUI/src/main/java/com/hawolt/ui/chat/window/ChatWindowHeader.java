@@ -1,8 +1,12 @@
 package com.hawolt.ui.chat.window;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.*;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LLabel;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
+import com.hawolt.util.paint.PaintHelper;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -22,7 +26,7 @@ public class ChatWindowHeader extends ChildUIComponent {
         this.setForeground(ColorPalette.textColor);
         this.setBorder(new EmptyBorder(0, 5, 0, 0));
         this.add(target = new LLabel("", LTextAlign.LEFT), BorderLayout.CENTER);
-        LFlatButton close = new LFlatButton("×", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton close = new LFlatButton("×", LTextAlign.CENTER, HighlightType.COMPONENT);
         close.setRoundingCorners(true, false, true, false);
         close.setRounding(ColorPalette.CARD_ROUNDING);
         this.add(close, BorderLayout.EAST);

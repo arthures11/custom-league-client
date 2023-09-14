@@ -2,9 +2,9 @@ package com.hawolt.ui.github;
 
 import com.hawolt.generic.util.Network;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LScrollPane;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

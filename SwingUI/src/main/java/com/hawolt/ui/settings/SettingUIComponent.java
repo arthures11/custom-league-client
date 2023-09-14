@@ -1,17 +1,18 @@
 package com.hawolt.ui.settings;
 
 
-import com.hawolt.StaticConstant;
 import com.hawolt.generic.util.Network;
 import com.hawolt.io.RunLevel;
 import com.hawolt.logger.Logger;
-import com.hawolt.settings.SettingService;
-import com.hawolt.settings.SettingType;
+import com.hawolt.ui.generic.component.*;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.ui.github.Github;
-import com.hawolt.util.ColorPalette;
 import com.hawolt.util.audio.AudioEngine;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.*;
+import com.hawolt.util.other.StaticConstant;
+import com.hawolt.util.settings.SettingService;
+import com.hawolt.util.settings.SettingType;
 import com.hawolt.virtual.misc.DynamicObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -87,7 +88,7 @@ public class SettingUIComponent extends ChildUIComponent {
         pathField.setPreferredSize(new Dimension(800, 30));
         pathContainer.add(pathField, BorderLayout.SOUTH);
 
-        LFlatButton searchButton = new LFlatButton("Open", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton searchButton = new LFlatButton("Open", LTextAlign.CENTER, HighlightType.COMPONENT);
         searchButton.setRounding(ColorPalette.CARD_ROUNDING);
         searchButton.setPreferredSize(new Dimension(80, 30));
         searchButton.addActionListener(listener -> {
@@ -259,7 +260,7 @@ public class SettingUIComponent extends ChildUIComponent {
         JLabel h = createLabel("Come ask on:");
         discordContainer.add(h, BorderLayout.WEST);
 
-        LFlatButton help = new LFlatButton("Discord", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton help = new LFlatButton("Discord", LTextAlign.CENTER, HighlightType.COMPONENT);
         help.addActionListener(listener -> {
             try {
                 Network.browse("https://discord.gg/UcGhC9dcHk");
@@ -303,7 +304,7 @@ public class SettingUIComponent extends ChildUIComponent {
         JLabel b = createLabel("Found a bug?");
         submitBugContainer.add(b);
 
-        LFlatButton bug = new LFlatButton("Submit bug", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton bug = new LFlatButton("Submit bug", LTextAlign.CENTER, HighlightType.COMPONENT);
         bug.addActionListener(listener -> {
             JFrame temp = new JFrame();
             int confirm = JOptionPane.showConfirmDialog(temp, "This will open a bug issue on Github. You'll need an account to continue. Do you want to continue?",

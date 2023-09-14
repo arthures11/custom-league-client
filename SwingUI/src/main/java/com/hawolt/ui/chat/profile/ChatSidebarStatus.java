@@ -2,8 +2,8 @@ package com.hawolt.ui.chat.profile;
 
 import com.hawolt.client.LeagueClient;
 import com.hawolt.client.cache.CacheType;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.ui.LComboBox;
+import com.hawolt.ui.generic.component.LComboBox;
+import com.hawolt.ui.generic.themes.ColorPalette;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 import com.hawolt.xmpp.event.objects.presence.Presence;
 

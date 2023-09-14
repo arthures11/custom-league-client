@@ -6,12 +6,11 @@ import com.hawolt.client.resources.ledge.parties.objects.data.PositionPreference
 import com.hawolt.client.resources.ledge.preferences.PlayerPreferencesLedge;
 import com.hawolt.client.resources.ledge.preferences.objects.PreferenceType;
 import com.hawolt.logger.Logger;
-import com.hawolt.settings.SettingType;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LComboBox;
+import com.hawolt.ui.generic.component.LComboBox;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.util.settings.SettingType;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -2,7 +2,7 @@ package com.hawolt.ui.queue;
 
 import com.hawolt.client.resources.ledge.parties.objects.PartyMember;
 import com.hawolt.client.resources.ledge.parties.objects.PartyParticipantMetadata;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.util.paint.PaintHelper;
 
 import java.awt.*;
 

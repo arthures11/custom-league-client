@@ -4,8 +4,8 @@ import com.hawolt.client.resources.communitydragon.rune.BasicRune;
 import com.hawolt.client.resources.communitydragon.rune.RuneType;
 import com.hawolt.ui.champselect.IRuneSelection;
 import com.hawolt.ui.champselect.IncompleteRunePageException;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import java.awt.*;
 import java.util.LinkedList;

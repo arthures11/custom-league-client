@@ -7,7 +7,7 @@ import com.hawolt.client.resources.ledge.parties.objects.Party;
 import com.hawolt.client.resources.ledge.parties.objects.data.PartyRole;
 import com.hawolt.client.resources.ledge.summoner.objects.Summoner;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.*;
 import java.awt.*;

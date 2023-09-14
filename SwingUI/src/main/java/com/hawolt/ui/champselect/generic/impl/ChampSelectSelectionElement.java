@@ -3,9 +3,9 @@ package com.hawolt.ui.champselect.generic.impl;
 import com.hawolt.async.loader.ResourceConsumer;
 import com.hawolt.logger.Logger;
 import com.hawolt.ui.champselect.data.ChampSelectType;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.util.paint.PaintHelper;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;

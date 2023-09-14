@@ -7,8 +7,8 @@ import com.hawolt.logger.Logger;
 import com.hawolt.rms.data.subject.service.IServiceMessageListener;
 import com.hawolt.rms.data.subject.service.MessageService;
 import com.hawolt.rms.data.subject.service.RiotMessageServiceMessage;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.json.JSONObject;
 
 import java.awt.*;

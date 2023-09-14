@@ -1,8 +1,8 @@
 package com.hawolt.util.discord;
 
-import com.hawolt.StaticConstant;
 import com.hawolt.async.ExecutorManager;
 import com.hawolt.logger.Logger;
+import com.hawolt.util.other.StaticConstant;
 import de.jcm.discordgamesdk.Core;
 import de.jcm.discordgamesdk.CreateParams;
 import de.jcm.discordgamesdk.LogLevel;

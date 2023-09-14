@@ -1,14 +1,14 @@
 package com.hawolt.ui.settings;
 
 import com.hawolt.LeagueClientUI;
-import com.hawolt.settings.SettingService;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.themes.LThemeChoice;
-import com.hawolt.util.ui.LComboBox;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LComboBox;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.themes.impl.LThemeChoice;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
+import com.hawolt.util.settings.SettingService;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -79,13 +79,13 @@ public class SettingsUI extends ChildUIComponent {
         ChildUIComponent footer = new ChildUIComponent(new FlowLayout(FlowLayout.CENTER, 5, 5));
         add(footer, BorderLayout.SOUTH);
 
-        LFlatButton saveButton = new LFlatButton("Save", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton saveButton = new LFlatButton("Save", LTextAlign.CENTER, HighlightType.COMPONENT);
         saveButton.addActionListener(listener -> {
             save();
         });
         footer.add(saveButton);
 
-        LFlatButton closeButton = new LFlatButton("Close", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton closeButton = new LFlatButton("Close", LTextAlign.CENTER, HighlightType.COMPONENT);
         closeButton.addActionListener(listener -> {
             cl.first(mainPanel);
             close();

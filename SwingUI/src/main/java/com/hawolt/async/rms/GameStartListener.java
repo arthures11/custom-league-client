@@ -4,7 +4,7 @@ import com.hawolt.LeagueClientUI;
 import com.hawolt.generic.data.Platform;
 import com.hawolt.rms.data.subject.service.IServiceMessageListener;
 import com.hawolt.rms.data.subject.service.RiotMessageServiceMessage;
-import com.hawolt.util.Launcher;
+import com.hawolt.util.other.Launcher;
 
 /**
  * Created: 11/08/2023 18:01

@@ -1,8 +1,8 @@
 package com.hawolt.ui.settings;
 
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.DynamicGridLayout;
-import com.hawolt.util.ui.LScrollPane;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.layout.DynamicGridLayout;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.*;
 import java.awt.*;

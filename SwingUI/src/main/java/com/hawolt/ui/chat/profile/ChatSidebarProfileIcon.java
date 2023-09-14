@@ -3,9 +3,9 @@ package com.hawolt.ui.chat.profile;
 import com.hawolt.async.loader.ResourceConsumer;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.util.paint.PaintHelper;
 import com.hawolt.virtual.leagueclient.userinfo.UserInformation;
 import org.imgscalr.Scalr;
 

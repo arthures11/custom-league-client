@@ -10,11 +10,11 @@ import com.hawolt.rtmp.utility.PacketCallback;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectBenchElement;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectChoice;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import org.json.JSONArray;
 
 import javax.swing.*;
@@ -50,7 +50,7 @@ public class ARAMBenchUI extends ChampSelectUIComponent {
         }
         add(grid, BorderLayout.CENTER);
 
-        LFlatButton button = new LFlatButton("⟳", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton button = new LFlatButton("⟳", LTextAlign.CENTER, HighlightType.COMPONENT);
         button.addActionListener(listener -> LeagueClientUI.service.execute(() -> {
             LeagueRtmpClient client = context.getChampSelectDataContext().getLeagueClient().getRTMPClient();
             TeamBuilderService teamBuilderService = client.getTeamBuilderService();

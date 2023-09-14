@@ -4,8 +4,8 @@ import com.hawolt.LeagueClientUI;
 import com.hawolt.client.resources.Loadout;
 import com.hawolt.client.resources.ledge.parties.objects.data.TFTLegend;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LComboBox;
+import com.hawolt.ui.generic.component.LComboBox;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import java.awt.*;
 import java.io.IOException;

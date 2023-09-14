@@ -5,7 +5,7 @@ import com.hawolt.ui.champselect.data.ChampSelectPhase;
 import com.hawolt.ui.champselect.data.ChampSelectType;
 import com.hawolt.ui.champselect.generic.ChampSelectRuneSelection;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import java.awt.*;
 import java.util.HashMap;

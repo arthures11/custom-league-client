@@ -20,8 +20,8 @@ import com.hawolt.ui.champselect.impl.blank.BlankChampSelectUI;
 import com.hawolt.ui.champselect.impl.blind.BlindChampSelectUI;
 import com.hawolt.ui.champselect.impl.draft.DraftChampSelectUI;
 import com.hawolt.ui.champselect.postgame.PostGameUI;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import com.hawolt.ui.layout.LayoutComponent;
-import com.hawolt.util.panel.ChildUIComponent;
 import org.json.JSONObject;
 
 import javax.swing.*;

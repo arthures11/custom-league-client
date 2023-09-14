@@ -1,7 +1,7 @@
 package com.hawolt.ui.champselect.generic;
 
 import com.hawolt.ui.champselect.context.*;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 /**
  * Created: 29/08/2023 17:13

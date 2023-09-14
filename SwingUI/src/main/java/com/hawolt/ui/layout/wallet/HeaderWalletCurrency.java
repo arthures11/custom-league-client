@@ -3,8 +3,8 @@ package com.hawolt.ui.layout.wallet;
 import com.hawolt.async.loader.ResourceConsumer;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;

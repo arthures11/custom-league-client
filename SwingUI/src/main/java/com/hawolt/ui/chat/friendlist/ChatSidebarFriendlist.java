@@ -2,18 +2,18 @@ package com.hawolt.ui.chat.friendlist;
 
 import com.hawolt.LeagueClientUI;
 import com.hawolt.client.misc.SortOrder;
-import com.hawolt.settings.SettingListener;
 import com.hawolt.ui.champselect.context.ChampSelectDataContext;
 import com.hawolt.ui.champselect.context.impl.ChampSelect;
 import com.hawolt.ui.chat.window.IChatWindow;
-import com.hawolt.util.ColorPalette;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LLabel;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.util.audio.AudioEngine;
 import com.hawolt.util.audio.Sound;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LLabel;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.util.settings.SettingListener;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 import com.hawolt.xmpp.event.EventListener;
 import com.hawolt.xmpp.event.handler.presence.IPresenceListener;
@@ -169,7 +169,7 @@ public class ChatSidebarFriendlist extends ChildUIComponent implements SettingLi
         switch (friendHandling) {
             case "User choice" -> {
                 if (incoming) {
-                    LFlatButton accept = new LFlatButton("+", LTextAlign.CENTER, LHighlightType.COMPONENT);
+                    LFlatButton accept = new LFlatButton("+", LTextAlign.CENTER, HighlightType.COMPONENT);
                     accept.addActionListener(listener -> {
                         VirtualRiotXMPPClient client = window.getXMPPClient();
                         List<GenericFriend> list = client.getFriendList().find(friend -> genericFriend.getName().equals(friend.getName()));
@@ -183,7 +183,7 @@ public class ChatSidebarFriendlist extends ChildUIComponent implements SettingLi
                     accept.setPreferredSize(new Dimension(30, 0));
                     actions.add(accept);
                 }
-                LFlatButton remove = new LFlatButton("×", LTextAlign.CENTER, LHighlightType.COMPONENT);
+                LFlatButton remove = new LFlatButton("×", LTextAlign.CENTER, HighlightType.COMPONENT);
                 remove.addActionListener(listener -> {
                     VirtualRiotXMPPClient client = window.getXMPPClient();
                     List<GenericFriend> list = client.getFriendList().find(friend -> genericFriend.getName().equals(friend.getName()));

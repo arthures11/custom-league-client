@@ -1,17 +1,17 @@
 package com.hawolt.ui.champselect.generic.impl;
 
+import com.hawolt.async.Debouncer;
 import com.hawolt.client.resources.communitydragon.spell.Spell;
 import com.hawolt.client.resources.communitydragon.spell.SpellIndex;
 import com.hawolt.client.resources.communitydragon.spell.SpellSource;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.ui.custom.LHintTextField;
-import com.hawolt.ui.impl.Debouncer;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LComboBox;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LComboBox;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LHintTextField;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,9 +55,9 @@ public class ChampSelectGameSettingUI extends ChampSelectUIComponent {
         spellUI.setBorder(new EmptyBorder(5, 5, 5, 5));
         add(spellUI, BorderLayout.EAST);
         ChildUIComponent buttonUI = new ChildUIComponent(new GridLayout(0, 4, 5, 0));
-        buttonUI.add(dodge = new LFlatButton("Dodge", LTextAlign.CENTER, LHighlightType.COMPONENT));
-        buttonUI.add(submit = new LFlatButton("Submit Choice", LTextAlign.CENTER, LHighlightType.COMPONENT));
-        buttonUI.add(runes = new LFlatButton("Rune Page", LTextAlign.CENTER, LHighlightType.COMPONENT));
+        buttonUI.add(dodge = new LFlatButton("Dodge", LTextAlign.CENTER, HighlightType.COMPONENT));
+        buttonUI.add(submit = new LFlatButton("Submit Choice", LTextAlign.CENTER, HighlightType.COMPONENT));
+        buttonUI.add(runes = new LFlatButton("Rune Page", LTextAlign.CENTER, HighlightType.COMPONENT));
         dodge.setRounding(ColorPalette.CARD_ROUNDING);
         submit.setRounding(ColorPalette.CARD_ROUNDING);
         runes.setRounding(ColorPalette.CARD_ROUNDING);

@@ -10,11 +10,11 @@ import com.hawolt.client.resources.ledge.summoner.SummonerLedge;
 import com.hawolt.client.resources.ledge.summoner.objects.Summoner;
 import com.hawolt.generic.data.Unsafe;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.HighlightType;
+import com.hawolt.util.paint.PaintHelper;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 import com.hawolt.xmpp.event.objects.friends.GenericFriend;
 import com.hawolt.xmpp.event.objects.friends.impl.OnlineFriend;
@@ -56,7 +56,7 @@ public class ChatSidebarFriend extends LFlatButton {
 
     public ChatSidebarFriend(VirtualRiotXMPPClient xmppClient, GenericFriend friend, LeagueClientUI leagueClientUI) {
         super();
-        setHighlightType(LHighlightType.COMPONENT);
+        setHighlightType(HighlightType.COMPONENT);
         this.setPreferredSize(new Dimension(0, 50));
         this.friend = friend;
         this.xmppClient = xmppClient;

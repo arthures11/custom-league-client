@@ -1,6 +1,6 @@
 package com.hawolt.ui.chat.profile;
 
-import com.hawolt.util.ColorPalette;
+import com.hawolt.ui.generic.themes.ColorPalette;
 
 import javax.swing.*;
 import java.awt.*;

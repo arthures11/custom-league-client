@@ -1,13 +1,13 @@
 package com.hawolt.ui.chat.friendlist;
 
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LLabel;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.ui.github.Github;
 import com.hawolt.ui.settings.SettingsUI;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LLabel;
-import com.hawolt.util.ui.LTextAlign;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class ChatSidebarFooter extends ChildUIComponent {
         this.setPreferredSize(new Dimension(0, HEIGHT));
         this.setBackground(ColorPalette.accentColor);
 
-        LFlatButton settingsButton = new LFlatButton("⚙", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton settingsButton = new LFlatButton("⚙", LTextAlign.CENTER, HighlightType.COMPONENT);
         settingsButton.setBorder(BorderFactory.createEmptyBorder());
         settingsButton.setRounding(ColorPalette.CARD_ROUNDING);
         settingsButton.setRoundingCorners(true, false, false, false);

@@ -5,7 +5,7 @@ import com.hawolt.ui.champselect.data.ChampSelectMember;
 import com.hawolt.ui.champselect.data.ChampSelectTeam;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectMemberElement;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectSidebarUI;
-import com.hawolt.util.ColorPalette;
+import com.hawolt.ui.generic.themes.ColorPalette;
 
 import java.awt.*;
 import java.util.concurrent.ExecutorService;

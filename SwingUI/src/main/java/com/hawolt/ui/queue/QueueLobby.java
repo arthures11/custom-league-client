@@ -13,11 +13,11 @@ import com.hawolt.logger.Logger;
 import com.hawolt.rms.data.subject.service.IServiceMessageListener;
 import com.hawolt.rms.data.subject.service.MessageService;
 import com.hawolt.rms.data.subject.service.RiotMessageServiceMessage;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -60,11 +60,11 @@ abstract public class QueueLobby extends ChildUIComponent implements ActionListe
         this.leagueClientUI.getLeagueClient().getRMSClient().getHandler().addMessageServiceListener(MessageService.PARTIES, this);
 
         ChildUIComponent top = new ChildUIComponent(new GridLayout(0, 1, 0, 0));
-        LFlatButton close = new LFlatButton("Choose mode", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton close = new LFlatButton("Choose mode", LTextAlign.CENTER, HighlightType.COMPONENT);
         close.addActionListener(listener -> layout.show(parent, "modes"));
 
-        LFlatButton invite = new LFlatButton("Invite another Summoner", LTextAlign.CENTER, LHighlightType.COMPONENT);
-        LFlatButton leave = new LFlatButton("Leave Party", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton invite = new LFlatButton("Invite another Summoner", LTextAlign.CENTER, HighlightType.COMPONENT);
+        LFlatButton leave = new LFlatButton("Leave Party", LTextAlign.CENTER, HighlightType.COMPONENT);
         leave.addActionListener(listener -> {
             layout.show(parent, "modes");
             try {
@@ -109,12 +109,12 @@ abstract public class QueueLobby extends ChildUIComponent implements ActionListe
         add(component, BorderLayout.CENTER);
         ChildUIComponent bottom = new ChildUIComponent(new GridLayout(0, 2, 5, 0));
         bottom.setBorder(new EmptyBorder(5, 5, 5, 5));
-        LFlatButton start = new LFlatButton("Start", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton start = new LFlatButton("Start", LTextAlign.CENTER, HighlightType.COMPONENT);
         start.setRounding(ColorPalette.BUTTON_SMALL_ROUNDING);
         start.setBackground(ColorPalette.buttonSelectionColor);
         start.setHighlightColor(ColorPalette.buttonSelectionAltColor);
         start.addActionListener(listener -> startQueue());
-        LFlatButton stop = new LFlatButton("×", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton stop = new LFlatButton("×", LTextAlign.CENTER, HighlightType.COMPONENT);
         stop.setRounding(ColorPalette.BUTTON_SMALL_ROUNDING);
         stop.setBackground(ColorPalette.buttonSelectionColor);
         stop.setHighlightColor(ColorPalette.buttonSelectionAltColor);

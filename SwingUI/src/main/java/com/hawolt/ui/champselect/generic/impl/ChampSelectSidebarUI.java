@@ -4,8 +4,8 @@ import com.hawolt.async.ExecutorManager;
 import com.hawolt.ui.champselect.context.ChampSelectSettingsContext;
 import com.hawolt.ui.champselect.data.*;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.border.EmptyBorder;

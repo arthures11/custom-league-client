@@ -1,15 +1,15 @@
 package com.hawolt.ui.layout;
 
-import com.hawolt.async.LazyLoadedImageComponent;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.client.LeagueClient;
 import com.hawolt.ui.chat.profile.ChatSidebarProfile;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
+import com.hawolt.ui.generic.utility.LazyLoadedImageComponent;
 import com.hawolt.ui.layout.wallet.HeaderWallet;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
 import com.hawolt.virtual.leagueclient.userinfo.UserInformation;
 
 import javax.swing.*;
@@ -91,7 +91,7 @@ public class LayoutHeader extends ChildUIComponent {
     }
 
     public LFlatButton createHeaderComponent(LayoutComponent component) {
-        LFlatButton button = new LFlatButton(component.name().replace("_", " "), LTextAlign.CENTER, LHighlightType.TEXT);
+        LFlatButton button = new LFlatButton(component.name().replace("_", " "), LTextAlign.CENTER, HighlightType.TEXT);
         button.addActionListener(listener -> selectAndShowComponent(component));
         map.put(component, button);
         return button;

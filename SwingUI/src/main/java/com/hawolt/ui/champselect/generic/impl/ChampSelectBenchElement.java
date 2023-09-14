@@ -1,10 +1,10 @@
 package com.hawolt.ui.champselect.generic.impl;
 
+import com.hawolt.async.Debouncer;
 import com.hawolt.async.loader.ResourceConsumer;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.logger.Logger;
-import com.hawolt.ui.impl.Debouncer;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;

@@ -1,8 +1,8 @@
 package com.hawolt.ui.chat.window;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.PaintHelper;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.util.paint.PaintHelper;
 
 import java.awt.*;
 import java.util.ArrayList;

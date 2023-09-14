@@ -1,9 +1,9 @@
 package com.hawolt.ui.chat.window;
 
 import com.hawolt.ui.chat.friendlist.IFriendListComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import com.hawolt.util.audio.AudioEngine;
 import com.hawolt.util.audio.Sound;
-import com.hawolt.util.panel.ChildUIComponent;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 import com.hawolt.xmpp.event.handler.message.IMessageListener;
 import com.hawolt.xmpp.event.objects.conversation.history.impl.FailedMessage;

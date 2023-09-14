@@ -4,9 +4,9 @@ import com.hawolt.LeagueClientUI;
 import com.hawolt.ui.chat.friendlist.ChatSidebarEssentials;
 import com.hawolt.ui.chat.friendlist.ChatSidebarFooter;
 import com.hawolt.ui.chat.friendlist.ChatSidebarFriendlist;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LScrollPane;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.*;
 import java.awt.*;

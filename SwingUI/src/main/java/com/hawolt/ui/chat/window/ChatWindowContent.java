@@ -1,11 +1,11 @@
 package com.hawolt.ui.chat.window;
 
 import com.hawolt.rtmp.amf.Pair;
-import com.hawolt.ui.custom.LHintTextField;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LScrollPane;
-import com.hawolt.util.ui.SmartScroller;
+import com.hawolt.ui.generic.component.LHintTextField;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.SmartScroller;
 import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
 
 import javax.swing.*;

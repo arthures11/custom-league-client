@@ -4,7 +4,7 @@ import com.hawolt.ui.champselect.data.ActionObject;
 import com.hawolt.ui.champselect.data.ChampSelectTeam;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectBanElement;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectSidebarUI;
-import com.hawolt.util.panel.ChildUIComponent;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.border.MatteBorder;
 import java.awt.*;

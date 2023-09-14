@@ -1,13 +1,13 @@
 package com.hawolt.ui.login;
 
 import com.hawolt.LeagueClientUI;
-import com.hawolt.ui.custom.LHintPasswordTextField;
-import com.hawolt.ui.custom.LHintTextField;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.MainUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LHintPasswordTextField;
+import com.hawolt.ui.generic.component.LHintTextField;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.HighlightType;
+import com.hawolt.ui.generic.utility.MainUIComponent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -37,7 +37,7 @@ public class LoginUI extends MainUIComponent implements ActionListener {
 
         this.username = new LHintTextField("username");
         this.password = new LHintPasswordTextField("password");
-        this.login = new LFlatButton("Login", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        this.login = new LFlatButton("Login", LTextAlign.CENTER, HighlightType.COMPONENT);
         this.login.setActionCommand("REGULAR");
         this.rememberMe = new JCheckBox("Remember Me");
         this.rememberMe.setForeground(Color.WHITE);

@@ -1,6 +1,7 @@
 package com.hawolt.ui.champselect.generic.impl;
 
 import com.hawolt.LeagueClientUI;
+import com.hawolt.async.Debouncer;
 import com.hawolt.async.ExecutorManager;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.async.loader.ResourceManager;
@@ -19,8 +20,7 @@ import com.hawolt.rtmp.service.impl.TeamBuilderService;
 import com.hawolt.ui.champselect.context.ChampSelectContext;
 import com.hawolt.ui.champselect.data.*;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.ui.impl.Debouncer;
-import com.hawolt.util.ColorPalette;
+import com.hawolt.ui.generic.themes.ColorPalette;
 import com.hawolt.util.paint.custom.GraphicalDrawableManager;
 import org.imgscalr.Scalr;
 

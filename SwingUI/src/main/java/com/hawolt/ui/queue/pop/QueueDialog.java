@@ -1,9 +1,9 @@
 package com.hawolt.ui.queue.pop;
 
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -40,11 +40,11 @@ public class QueueDialog extends JDialog implements ActionListener {
         ChildUIComponent component = new ChildUIComponent(new GridLayout(0, 2, 5, 0));
         component.setBorder(new EmptyBorder(5, 0, 0, 0));
 
-        LFlatButton accept = new LFlatButton("Accept", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton accept = new LFlatButton("Accept", LTextAlign.CENTER, HighlightType.COMPONENT);
         accept.addActionListener(this);
         component.add(accept);
 
-        LFlatButton decline = new LFlatButton("Decline", LTextAlign.CENTER, LHighlightType.COMPONENT);
+        LFlatButton decline = new LFlatButton("Decline", LTextAlign.CENTER, HighlightType.COMPONENT);
         decline.addActionListener(this);
         component.add(decline);
 

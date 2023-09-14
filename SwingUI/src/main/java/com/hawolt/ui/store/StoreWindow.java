@@ -7,8 +7,8 @@ import com.hawolt.client.resources.ledge.store.objects.InventoryType;
 import com.hawolt.client.resources.ledge.store.objects.StoreItem;
 import com.hawolt.client.resources.ledge.store.objects.StoreSortProperty;
 import com.hawolt.logger.Logger;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LTabbedPane;
+import com.hawolt.ui.generic.component.LTabbedPane;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -8,9 +8,9 @@ import com.hawolt.client.resources.communitydragon.champion.ChampionSource;
 import com.hawolt.ui.champselect.context.ChampSelectSettingsContext;
 import com.hawolt.ui.champselect.data.ChampSelectType;
 import com.hawolt.ui.champselect.generic.ChampSelectUIComponent;
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LScrollPane;
+import com.hawolt.ui.generic.component.LScrollPane;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -1,11 +1,11 @@
 package com.hawolt.ui.settings;
 
-import com.hawolt.util.ColorPalette;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LLabel;
-import com.hawolt.util.ui.LTextAlign;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LLabel;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -37,7 +37,7 @@ public class SettingsSidebar extends JPanel {
     }
 
     protected static LFlatButton newSectionButton(String name, CardLayout cl, JPanel main) {
-        LFlatButton button = new LFlatButton(name, LTextAlign.CENTER, LHighlightType.LEFT);
+        LFlatButton button = new LFlatButton(name, LTextAlign.CENTER, HighlightType.LEFT);
         button.setActionCommand(name);
         button.setBackground(ColorPalette.accentColor);
         button.setMaximumSize(sectionDimension);

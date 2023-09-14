@@ -16,15 +16,15 @@ import com.hawolt.rtmp.io.RtmpPacket;
 import com.hawolt.rtmp.utility.Base64GZIP;
 import com.hawolt.rtmp.utility.PacketCallback;
 import com.hawolt.ui.chat.friendlist.ChatSidebarEssentials;
+import com.hawolt.ui.generic.component.LFlatButton;
+import com.hawolt.ui.generic.component.LLabel;
+import com.hawolt.ui.generic.component.LTextAlign;
+import com.hawolt.ui.generic.themes.ColorPalette;
+import com.hawolt.ui.generic.utility.ChildUIComponent;
+import com.hawolt.ui.generic.utility.HighlightType;
 import com.hawolt.ui.queue.pop.QueueDialog;
-import com.hawolt.util.ColorPalette;
 import com.hawolt.util.audio.AudioEngine;
 import com.hawolt.util.audio.Sound;
-import com.hawolt.util.panel.ChildUIComponent;
-import com.hawolt.util.ui.LFlatButton;
-import com.hawolt.util.ui.LHighlightType;
-import com.hawolt.util.ui.LLabel;
-import com.hawolt.util.ui.LTextAlign;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -181,7 +181,7 @@ public class QueueWindow extends ChildUIComponent implements Runnable, PacketCal
                     modeName = "ARAM";
                 }
 
-                LFlatButton button = new LFlatButton(modeName.isEmpty() ? name : modeName, LTextAlign.CENTER, LHighlightType.COMPONENT);
+                LFlatButton button = new LFlatButton(modeName.isEmpty() ? name : modeName, LTextAlign.CENTER, HighlightType.COMPONENT);
 
                 button.setPreferredSize(new Dimension(grid.getWidth() / 4, 30));
 
@@ -289,7 +289,7 @@ public class QueueWindow extends ChildUIComponent implements Runnable, PacketCal
             lobby.actionPerformed(null);
         }
         if (!init) {
-            LFlatButton button = new LFlatButton("Show Lobby", LTextAlign.CENTER, LHighlightType.COMPONENT);
+            LFlatButton button = new LFlatButton("Show Lobby", LTextAlign.CENTER, HighlightType.COMPONENT);
             button.setPreferredSize(new Dimension(getWidth() / 5, 30));
             button.setHorizontalAlignment(SwingConstants.CENTER);
             button.setVerticalAlignment(SwingConstants.CENTER);

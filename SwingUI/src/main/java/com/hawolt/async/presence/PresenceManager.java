@@ -22,7 +22,6 @@ import com.hawolt.xmpp.event.objects.presence.Presence;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -116,14 +115,15 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
     }
 
     public void setIdlePresence() {
-        Logger.error("IDLE");
         leagueClient.getCachedValueOrElse(CacheType.PRESENCE_BUILDER, this::configure, Logger::error).ifPresent(builder -> {
             builder.setGameStatus("outOfGame");
             builder.setQueueId("");
             builder.setGameMode("");
             builder.setGameQueueType("");
             builder.setPTY("");
-            builder.setTimestamp("");
+            //TODO investigate
+            //14.09.2023: not sent during Idle
+            //builder.setTimestamp("");
             builder.setIsObservable("");
             builder.setMapId("");
             builder.setChampionId("");
@@ -140,8 +140,7 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
     }
 
     @Override
-    public void onPacket(RtmpPacket rtmpPacket, TypedObject typedObject) {
-        Logger.error("CHAMPSELECT");
+    public void onPacket(RtmpPacket rtmpPacket, TypedObject typedObject) throws Exception {
         if (typedObject == null || !typedObject.containsKey("data")) return;
         TypedObject data = typedObject.getTypedObject("data");
         if (data == null || !data.containsKey("flex.messaging.messages.AsyncMessage")) return;
@@ -153,33 +152,27 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         }
         TypedObject response = body.getTypedObject("com.riotgames.platform.serviceproxy.dispatch.LcdsServiceProxyResponse");
         if (response == null || !response.containsKey("payload")) return;
-        try {
-            Object object = response.get("payload");
-            if (object == null) return;
-            JSONObject payload = new JSONObject(Base64GZIP.unzipBase64(object.toString()));
-            int queueId = payload.getInt("queueId");
-            Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
-            builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
-            builder.setGameMode(MapQueueId.getGameMode(queueId));
-            builder.setQueueId(String.valueOf(queueId));
-            builder.setGameStatus("championSelect");
-            builder.setMapId(MapQueueId.getMapId(queueId));
-            String status = leagueClientUI.getLayoutManager().getHeader().getProfile().getSummoner().getStatus().getBoxStatus();
-            if (status.equals("default")) status = "dnd";
-            leagueClient.getXMPPClient().setCustomPresence(status, leagueClient.getCachedValue(CacheType.CHAT_STATUS), builder.build());
-        } catch (IOException e) {
-            Logger.error(e);
-        }
+        Object object = response.get("payload");
+        if (object == null) return;
+        JSONObject payload = new JSONObject(Base64GZIP.unzipBase64(object.toString()));
+        int queueId = payload.getInt("queueId");
+        Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
+        builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
+        builder.setGameMode(MapQueueId.getGameMode(queueId));
+        builder.setQueueId(String.valueOf(queueId));
+        builder.setGameStatus("championSelect");
+        builder.setMapId(MapQueueId.getMapId(queueId));
+        String status = leagueClientUI.getLayoutManager().getHeader().getProfile().getSummoner().getStatus().getBoxStatus();
+        if (status.equals("default")) status = "dnd";
+        leagueClient.getXMPPClient().setCustomPresence(status, leagueClient.getCachedValue(CacheType.CHAT_STATUS), builder.build());
     }
 
     @Override
     public void onMessage(RiotMessageServiceMessage riotMessageServiceMessage) throws Exception {
         RiotMessageMessagePayload riotMessagePayload = riotMessageServiceMessage.getPayload();
         JSONObject payload = riotMessagePayload.getPayload();
-        Logger.error(payload);
         switch (riotMessagePayload.getService()) {
             case "Parties" -> {
-                Logger.error(payload);
                 if (!payload.has("player") || payload.isNull("player")) return;
                 PartiesRegistration registration = new PartiesRegistration(payload.getJSONObject("player"));
                 CurrentParty currentParty = registration.getCurrentParty();
@@ -212,10 +205,8 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
     }
 
     private void setQueuePresence() throws Exception {
-        Logger.error("INQUEUE");
         PartiesLedge partiesLedge = leagueClientUI.getLeagueClient().getLedge().getParties();
         PartiesRegistration registration = partiesLedge.getCurrentRegistration();
-        Logger.error(registration);
         Presence.Builder builder = leagueClientUI.getLeagueClient().getCachedValue(CacheType.PRESENCE_BUILDER);
         int queueId = registration.getCurrentParty().getPartyGameMode().getQueueId();
         builder.setTimestamp(String.valueOf(System.currentTimeMillis()));
@@ -228,7 +219,6 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
     }
 
     private void setLobbyPresence(JSONObject payload, String type) throws Exception {
-        Logger.error("INLOBBY");
         Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
         PartiesRegistration registration = new PartiesRegistration(payload.getJSONObject("player"));
         CurrentParty party = registration.getCurrentParty();
@@ -267,7 +257,6 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
     }
 
     private void setInGamePresence(JSONObject payload) throws Exception {
-        Logger.error("INGAME");
         Presence.Builder builder = leagueClientUI.getLeagueClient().getCachedValue(CacheType.PRESENCE_BUILDER);
         String gameId = String.valueOf(payload.getLong("gameId"));
         String gameMode = payload.getString("gameMode");

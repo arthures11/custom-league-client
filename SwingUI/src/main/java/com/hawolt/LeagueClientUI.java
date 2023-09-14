@@ -93,28 +93,6 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        RMANCache.preload();
-        AudioEngine.install();
-        LeagueClientUI.service.execute(() -> {
-            if (WMIC.isProcessRunning("Discord.exe")) RichPresence.show();
-        });
-        LeagueClientUI leagueClientUI = new LeagueClientUI(StaticConstant.PROJECT);
-        leagueClientUI.setIconImage(logo);
-        leagueClientUI.settingService = new SettingManager();
-        ClientSettings clientSettings = leagueClientUI.settingService.getClientSettings();
-        if (clientSettings.isRememberMe()) {
-            UserSettings userSettings = leagueClientUI.settingService.set(clientSettings.getRememberMeUsername());
-            LocalCookieSupplier localCookieSupplier = new LocalCookieSupplier();
-            localCookieSupplier.loadCookieState(userSettings.getCookies());
-            ClientConfiguration configuration = ClientConfiguration.getDefault(localCookieSupplier);
-            leagueClientUI.createRiotClient(configuration);
-        } else {
-            leagueClientUI.loginUI = LoginUI.show(leagueClientUI);
-            leagueClientUI.setVisible(true);
-        }
-    }
-
     private void configure(boolean remember) {
         ResourceLoader.loadResource("local", new PreferenceLoader(leagueClient), this);
         if (!remember) return;
@@ -269,7 +247,9 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
 
     @Override
     public void onLoginFlowException(Throwable throwable) {
-        Logger.error("Failed to initialize Client: {}", throwable.getMessage());
+        Logger.error("Failed to initialize Client");
+        Logger.error(throwable);
+        loginUI.toggle(true);
         if (throwable instanceof RiotClientException e) {
             switch (e.getMessage()) {
                 case "ERROR_TYPE_IS_NULL" -> showFailureDialog("Login errored but the error returned is null");
@@ -289,7 +269,6 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
                 default -> showFailureDialog("Unhandled LeagueClientException");
             }
         } else if (throwable instanceof IOException) {
-            Logger.error(throwable);
             switch (throwable.getMessage()) {
                 case "PREFERENCE_FAILURE" -> showFailureDialog("Unable to load Player Preference");
                 default -> showFailureDialog("Unhandled IOException");
@@ -297,7 +276,6 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
         } else {
             showFailureDialog("Unknown Error during login");
         }
-        this.loginUI.toggle(true);
     }
 
     private ClientConfiguration getConfiguration(String username, String password) {
@@ -319,6 +297,12 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
 
     @Override
     public void onLogin(String username, String password) {
+        if (loginUI.getRememberMe().isSelected()) {
+            System.out.println("write settings?");
+            settingService.write(SettingType.CLIENT, "remember", true);
+            settingService.write(SettingType.CLIENT, "username", username);
+        }
+        this.settingService.set(username);
         this.createRiotClient(getConfiguration(username, password));
     }
 
@@ -341,5 +325,31 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
     @Override
     public JSONObject transform(byte[] bytes) throws Exception {
         return new JSONObject(new String(bytes));
+    }
+
+    public static void main(String[] args) {
+        RMANCache.preload();
+        AudioEngine.install();
+        LeagueClientUI.service.execute(() -> {
+            if (WMIC.isProcessRunning("Discord.exe")) RichPresence.show();
+        });
+        LeagueClientUI leagueClientUI = new LeagueClientUI(StaticConstant.PROJECT);
+        leagueClientUI.setIconImage(logo);
+        leagueClientUI.settingService = new SettingManager();
+        leagueClientUI.loginUI = LoginUI.create(leagueClientUI);
+        ClientSettings clientSettings = leagueClientUI.settingService.getClientSettings();
+        leagueClientUI.loginUI.getRememberMe().setSelected(clientSettings.isRememberMe());
+        leagueClientUI.loginUI.toggle(false);
+        LocalCookieSupplier localCookieSupplier = new LocalCookieSupplier();
+        if (clientSettings.isRememberMe()) {
+            UserSettings userSettings = leagueClientUI.settingService.set(clientSettings.getRememberMeUsername());
+            localCookieSupplier.loadCookieState(userSettings.getCookies());
+            if (localCookieSupplier.isInCompletedState()) {
+                ClientConfiguration configuration = ClientConfiguration.getDefault(localCookieSupplier);
+                leagueClientUI.createRiotClient(configuration);
+            }
+        }
+        leagueClientUI.loginUI.toggle(true);
+        leagueClientUI.setVisible(true);
     }
 }

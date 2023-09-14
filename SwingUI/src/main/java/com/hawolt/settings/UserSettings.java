@@ -15,7 +15,7 @@ public class UserSettings extends DynamicObject {
     }
 
     public JSONArray getCookies() {
-        return getByKeyNonNullOrThrow("cookies", () -> new RuntimeException("NO_COOKIES_PRESENT"));
+        return getByKeyOrDefault("cookies", new JSONArray());
     }
 
     public JSONObject getPartyPositionPreference() {

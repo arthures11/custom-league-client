@@ -1,8 +1,6 @@
 package com.hawolt.ui.login;
 
 import com.hawolt.LeagueClientUI;
-import com.hawolt.settings.SettingService;
-import com.hawolt.settings.SettingType;
 import com.hawolt.ui.custom.LHintPasswordTextField;
 import com.hawolt.ui.custom.LHintTextField;
 import com.hawolt.util.ColorPalette;
@@ -28,7 +26,6 @@ public class LoginUI extends MainUIComponent implements ActionListener {
     private final LHintPasswordTextField password;
     private final LHintTextField username;
     private final ILoginCallback callback;
-    private final SettingService service;
     private final JCheckBox rememberMe;
     private final JButton login;
 
@@ -38,7 +35,6 @@ public class LoginUI extends MainUIComponent implements ActionListener {
         this.setLayout(new GridLayout(0, 1, 0, 5));
         this.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        this.service = clientUI.getSettingService();
         this.username = new LHintTextField("username");
         this.password = new LHintPasswordTextField("password");
         this.login = new LFlatButton("Login", LTextAlign.CENTER, LHighlightType.COMPONENT);
@@ -83,7 +79,7 @@ public class LoginUI extends MainUIComponent implements ActionListener {
         this.init();
     }
 
-    public static LoginUI show(LeagueClientUI leagueClientUI) {
+    public static LoginUI create(LeagueClientUI leagueClientUI) {
         return new LoginUI(leagueClientUI);
     }
 
@@ -103,11 +99,6 @@ public class LoginUI extends MainUIComponent implements ActionListener {
         this.toggle(false);
         String pass = new String(password.getPassword());
         String user = username.getText();
-        if (rememberMe.isSelected()) {
-            service.write(SettingType.CLIENT, "remember", true);
-            service.write(SettingType.CLIENT, "username", user);
-        }
-        service.set(user);
         LeagueClientUI.service.execute(() -> callback.onLogin(user, pass));
     }
 }

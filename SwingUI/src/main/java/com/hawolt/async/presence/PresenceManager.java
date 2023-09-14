@@ -10,6 +10,7 @@ import com.hawolt.client.resources.ledge.parties.objects.CurrentParty;
 import com.hawolt.client.resources.ledge.parties.objects.PartiesRegistration;
 import com.hawolt.client.resources.ledge.parties.objects.PartyGameMode;
 import com.hawolt.client.resources.ledge.summoner.objects.Summoner;
+import com.hawolt.logger.Logger;
 import com.hawolt.rms.data.impl.payload.RiotMessageMessagePayload;
 import com.hawolt.rms.data.subject.service.IServiceMessageListener;
 import com.hawolt.rms.data.subject.service.RiotMessageServiceMessage;
@@ -31,7 +32,6 @@ import java.util.HashMap;
 public class PresenceManager implements PacketCallback, IServiceMessageListener<RiotMessageServiceMessage> {
     private final LeagueClientUI leagueClientUI;
     private final LeagueClient leagueClient;
-    private Presence currentPresence;
     private String currentDefaultStatus;
 
     public PresenceManager(LeagueClientUI leagueClientUI) {
@@ -65,7 +65,7 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         };
     }
 
-    private Presence.Builder configure() throws Exception {
+    private Presence configure() throws Exception {
         JSONObject summonerRank = leagueClient.getLedge().getLeague().getOwnRankedStats();
         JSONArray queues = summonerRank.getJSONArray("queues");
         int rank = 0, tier = 0, lp = 0, target = 0;
@@ -112,7 +112,7 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         builder.setChallengePoints(String.valueOf(currentChallengePoints));
         String currentChallengeLevel = challengeValues.getString("level");
         builder.setChallengeCrystalLevel(currentChallengeLevel);
-        return builder;
+        return builder.build();
     }
 
 
@@ -133,17 +133,18 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         if (object == null) return;
         JSONObject payload = new JSONObject(Base64GZIP.unzipBase64(object.toString()));
         int queueId = payload.getInt("queueId");
-        Presence.Builder builder = configure();
-        String status = leagueClientUI.getHeader().getSelectedStatus();
-        builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
-        builder.setGameMode(MapQueueId.getGameMode(queueId));
-        builder.setQueueId(String.valueOf(queueId));
-        builder.setGameStatus("championSelect");
-        builder.setMapId(MapQueueId.getMapId(queueId));
-        if (status.equals("default")) status = "dnd";
-        currentDefaultStatus = "dnd";
-        currentPresence = builder.build();
-        set(status, currentPresence);
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            String status = leagueClientUI.getHeader().getSelectedStatus();
+            Presence.Builder builder = new Presence.Builder()
+                    .setGameQueueType(MapQueueId.getGameQueueType(queueId))
+                    .setGameMode(MapQueueId.getGameMode(queueId))
+                    .setQueueId(String.valueOf(queueId))
+                    .setGameStatus("championSelect")
+                    .setMapId(MapQueueId.getMapId(queueId));
+            if (status.equals("default")) status = "dnd";
+            currentDefaultStatus = "dnd";
+            set(status, builder.merge(base));
+        });
     }
 
     @Override
@@ -190,102 +191,105 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         );
     }
 
-    public void setIdlePresence() throws Exception {
-        String status = leagueClientUI.getHeader().getSelectedStatus();
-        Presence.Builder builder = configure();
-        builder.setGameStatus("outOfGame");
-        currentDefaultStatus = "chat";
-        currentPresence = builder.build();
-        set("default".equals(status) ? "chat" : status, currentPresence);
+    public void setIdlePresence() {
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            Presence.Builder builder = new Presence.Builder().setGameStatus("outOfGame");
+            String status = leagueClientUI.getHeader().getSelectedStatus();
+            currentDefaultStatus = "chat";
+            set("default".equals(status) ? "chat" : status, builder.merge(base));
+        });
     }
 
-    private void setQueuePresence() throws Exception {
+    private void setQueuePresence() {
+        String status = leagueClientUI.getHeader().getSelectedStatus();
         PartiesLedge partiesLedge = leagueClientUI.getLeagueClient().getLedge().getParties();
         PartiesRegistration registration = partiesLedge.getCurrentRegistration();
-        Presence.Builder builder = configure();
         int queueId = registration.getCurrentParty().getPartyGameMode().getQueueId();
-        builder.setTimestamp(String.valueOf(System.currentTimeMillis()));
-        builder.setGameMode(MapQueueId.getGameMode(queueId));
-        builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
-        builder.setGameStatus("inQueue");
-        builder.setQueueId(String.valueOf(queueId));
-        String status = leagueClientUI.getHeader().getSelectedStatus();
-        currentDefaultStatus = "dnd";
-        currentPresence = builder.build();
-        set("default".equals(status) ? "dnd" : status, currentPresence);
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            Presence.Builder builder = new Presence.Builder()
+                    .setTimestamp(String.valueOf(System.currentTimeMillis()))
+                    .setGameMode(MapQueueId.getGameMode(queueId))
+                    .setGameQueueType(MapQueueId.getGameQueueType(queueId))
+                    .setGameStatus("inQueue")
+                    .setQueueId(String.valueOf(queueId));
+            currentDefaultStatus = "dnd";
+            set("default".equals(status) ? "dnd" : status, builder.merge(base));
+        });
     }
 
-    private void setLobbyPresence(JSONObject payload) throws Exception {
-        Presence.Builder builder = configure();
-        PartiesRegistration registration = new PartiesRegistration(payload.getJSONObject("player"));
-        CurrentParty party = registration.getCurrentParty();
-        PartyGameMode mode = party.getPartyGameMode();
-        if (mode == null) return;
-        builder.setGameMode(MapQueueId.getGameMode(mode.getQueueId()));
-        builder.setGameQueueType(MapQueueId.getGameQueueType(mode.getQueueId()));
-        String puuid = leagueClient.getCachedValue(CacheType.PUUID);
-        party.getPlayers().stream()
-                .filter(player -> player.getPUUID().equals(puuid))
-                .findFirst()
-                .ifPresent(self -> {
-                    if (self.getRole().equals("LEADER")) {
-                        builder.setGameStatus("hosting_" + MapQueueId.getGameQueueType(mode.getQueueId()));
-                    } else {
-                        builder.setGameStatus("outOfGame");
-                    }
-                    if (party.getPlayers().size() + 1 < party.getMaxPartySize()) {
-                        JSONObject pty = new JSONObject();
-                        pty.put("maxPlayers", party.getPartyGameMode().getMaxPartySize());
-                        pty.put("partyId", party.getPartyId());
-                        pty.put("queueId", party.getPartyGameMode().getQueueId());
-                        JSONArray summoners = new JSONArray();
-                        for (int i = 0; i < party.getPlayers().size(); i++) {
-                            if (party.getPlayers().get(i).getRole().equals("MEMBER") || party.getPlayers().get(i).getRole().equals("LEADER")) {
-                                summoners.put(party.getPlayers().get(i).getSummonerId());
-                            }
+    private void setLobbyPresence(JSONObject payload) {
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            Presence.Builder builder = new Presence.Builder();
+            PartiesRegistration registration = new PartiesRegistration(payload.getJSONObject("player"));
+            CurrentParty party = registration.getCurrentParty();
+            PartyGameMode mode = party.getPartyGameMode();
+            if (mode == null) return;
+            builder.setGameMode(MapQueueId.getGameMode(mode.getQueueId()));
+            builder.setGameQueueType(MapQueueId.getGameQueueType(mode.getQueueId()));
+            String puuid = leagueClient.getCachedValue(CacheType.PUUID);
+            party.getPlayers().stream()
+                    .filter(player -> player.getPUUID().equals(puuid))
+                    .findFirst()
+                    .ifPresent(self -> {
+                        if (self.getRole().equals("LEADER")) {
+                            builder.setGameStatus("hosting_" + MapQueueId.getGameQueueType(mode.getQueueId()));
+                        } else {
+                            builder.setGameStatus("outOfGame");
                         }
-                        pty.put("summoners", summoners);
-                        builder.setPTY(pty.toString());
-                    }
-                    builder.setQueueId(String.valueOf(mode.getQueueId()));
-                    String status = leagueClientUI.getHeader().getSelectedStatus();
-                    currentDefaultStatus = "chat";
-                    currentPresence = builder.build();
-                    set("default".equals(status) ? "chat" : status, currentPresence);
-                });
+                        if (party.getPlayers().size() + 1 < party.getMaxPartySize()) {
+                            JSONObject pty = new JSONObject();
+                            pty.put("maxPlayers", party.getPartyGameMode().getMaxPartySize());
+                            pty.put("partyId", party.getPartyId());
+                            pty.put("queueId", party.getPartyGameMode().getQueueId());
+                            JSONArray summoners = new JSONArray();
+                            for (int i = 0; i < party.getPlayers().size(); i++) {
+                                if (party.getPlayers().get(i).getRole().equals("MEMBER") || party.getPlayers().get(i).getRole().equals("LEADER")) {
+                                    summoners.put(party.getPlayers().get(i).getSummonerId());
+                                }
+                            }
+                            pty.put("summoners", summoners);
+                            builder.setPTY(pty.toString());
+                        }
+                        builder.setQueueId(String.valueOf(mode.getQueueId()));
+                        String status = leagueClientUI.getHeader().getSelectedStatus();
+                        currentDefaultStatus = "chat";
+                        set("default".equals(status) ? "chat" : status, builder.merge(base));
+                    });
+        });
     }
 
     private void setInGamePresence(JSONObject payload) throws Exception {
-        Presence.Builder builder = configure();
         String gameId = String.valueOf(payload.getLong("gameId"));
         String gameMode = payload.getString("gameMode");
         long summonerId = payload.getLong("summonerId");
-        builder.setGameId(gameId);
-        builder.setGameMode(gameMode);
-        builder.setTimestamp(String.valueOf(System.currentTimeMillis()));
         GameServiceMessageLedge gmsLedge = leagueClientUI.getLeagueClient().getLedge().getGameServiceMessage();
         JSONObject data = gmsLedge.getGameInfoByGameId(gameId);
-        builder.setIsObservable("ALL");
-        builder.setGameStatus("inGame");
-        JSONObject finalSummoner = getSelf(summonerId, data);
-        data.getJSONArray("playerChampionSelections")
-                .toList()
-                .stream()
-                .map(o -> (HashMap<?, ?>) o)
-                .map(JSONObject::new)
-                .filter(object -> object.has("summonerInternalName"))
-                .filter(object -> object.getString("summonerInternalName").equals(finalSummoner.getString("summonerInternalName")))
-                .findFirst()
-                .ifPresent(choice -> {
-                    builder.setChampionId(String.valueOf(choice.getInt("championId")));
-                    builder.setGameQueueType(data.getString("queueTypeName"));
-                    builder.setQueueId(String.valueOf(data.getInt("gameQueueConfigId")));
-                    builder.setMapId(String.valueOf(data.getInt("mapId")));
-                    String status = leagueClientUI.getHeader().getSelectedStatus();
-                    currentDefaultStatus = "dnd";
-                    currentPresence = builder.build();
-                    set("default".equals(status) ? "dnd" : status, currentPresence);
-                });
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            Presence.Builder builder = new Presence.Builder();
+            builder.setGameId(gameId);
+            builder.setGameMode(gameMode);
+            builder.setIsObservable("ALL");
+            builder.setGameStatus("inGame");
+            builder.setTimestamp(String.valueOf(System.currentTimeMillis()));
+            JSONObject finalSummoner = getSelf(summonerId, data);
+            data.getJSONArray("playerChampionSelections")
+                    .toList()
+                    .stream()
+                    .map(o -> (HashMap<?, ?>) o)
+                    .map(JSONObject::new)
+                    .filter(object -> object.has("summonerInternalName"))
+                    .filter(object -> object.getString("summonerInternalName").equals(finalSummoner.getString("summonerInternalName")))
+                    .findFirst()
+                    .ifPresent(choice -> {
+                        builder.setChampionId(String.valueOf(choice.getInt("championId")));
+                        builder.setGameQueueType(data.getString("queueTypeName"));
+                        builder.setQueueId(String.valueOf(data.getInt("gameQueueConfigId")));
+                        builder.setMapId(String.valueOf(data.getInt("mapId")));
+                        String status = leagueClientUI.getHeader().getSelectedStatus();
+                        currentDefaultStatus = "dnd";
+                        set("default".equals(status) ? "dnd" : status, builder.merge(base));
+                    });
+        });
     }
 
     private JSONObject getSelf(long summonerId, JSONObject data) {
@@ -313,9 +317,11 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         return summoner;
     }
 
-    public void changeStatus() throws Exception {
-        if (currentPresence == null || currentDefaultStatus == null) setIdlePresence();
+    public void changeStatus() {
+        if (currentDefaultStatus == null) currentDefaultStatus = "chat";
         String status = leagueClientUI.getHeader().getSelectedStatus();
-        set("default".equals(status) ? currentDefaultStatus : status, currentPresence);
+        leagueClient.getCachedValueOrElse(CacheType.PRESENCE, this::configure, Logger::error).ifPresent(base -> {
+            set("default".equals(status) ? "dnd" : status, base);
+        });
     }
 }

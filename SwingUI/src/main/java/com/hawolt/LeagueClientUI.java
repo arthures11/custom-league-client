@@ -35,6 +35,8 @@ import com.hawolt.util.audio.AudioEngine;
 import com.hawolt.util.discord.RichPresence;
 import com.hawolt.util.os.WMIC;
 import com.hawolt.util.other.StaticConstant;
+import com.hawolt.util.paint.animation.AnimationVisualizer;
+import com.hawolt.util.paint.animation.impl.impl.SpinningAnimation;
 import com.hawolt.util.settings.*;
 import com.hawolt.virtual.client.RiotClientException;
 import com.hawolt.virtual.leagueclient.exception.LeagueException;
@@ -87,6 +89,7 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
     private LayoutHeader headerUI;
     private LoginUI loginUI;
     private MainUI mainUI;
+    private ChildUIComponent deck, main;
 
     public LeagueClientUI(String title) {
         super(title);
@@ -127,13 +130,16 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
         leagueClient.cache(CacheType.PLAYER_PREFERENCE, object);
         this.settingService.write(SettingType.PLAYER, "preferences", object);
         this.dispose();
+        this.loginUI.getAnimationVisualizer().stop();
         this.setUndecorated(true);
+        this.setVisible(true);
+        this.initialize();
         this.buildUI(leagueClient);
         this.wrap();
     }
 
     private void wrap() {
-        this.setVisible(true);
+        this.layout.show(deck, "main");
         this.leagueClient.getRTMPClient().addDefaultCallback(presence);
         this.headerUI.getChatSidebarStatus().setPresenceManager(presence);
         this.leagueClient.getRMSClient().getHandler().addMessageServiceListener(MessageService.GSM, presence);
@@ -162,9 +168,21 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
         this.bootstrap(client);
     }
 
+    private CardLayout layout = new CardLayout();
+    private AnimationVisualizer animationVisualizer;
+
+    private void initialize() {
+        this.mainUI = new MainUI(this);
+        this.deck = new ChildUIComponent(layout);
+        this.animationVisualizer = new AnimationVisualizer(new SpinningAnimation(5, 45));
+        this.deck.add("loading", animationVisualizer);
+        this.mainUI.setMainComponent(deck);
+        this.animationVisualizer.start();
+    }
+
     private void buildUI(LeagueClient client) {
-        ChildUIComponent temporary = new ChildUIComponent(new BorderLayout());
-        mainUI = new MainUI(this);
+        main = new ChildUIComponent(new BorderLayout());
+        deck.add("main", main);
         chatUI = new ChatUI();
         chatUI.setVisible(false);
         mainUI.addChatComponent(chatUI);
@@ -173,11 +191,10 @@ public class LeagueClientUI extends JFrame implements IClientCallback, ILoginCal
         mainUI.addSettingsComponent(settingsUI);
         chatSidebar = new ChatSidebar(this);
         manager = new LayoutManager(this);
-        temporary.add(manager, BorderLayout.CENTER);
-        temporary.add(chatSidebar, BorderLayout.EAST);
-        temporary.add(headerUI = new LayoutHeader(manager, client), BorderLayout.NORTH);
+        main.add(manager, BorderLayout.CENTER);
+        main.add(chatSidebar, BorderLayout.EAST);
+        main.add(headerUI = new LayoutHeader(manager, client), BorderLayout.NORTH);
         manager.setHeader(headerUI);
-        mainUI.setMainComponent(temporary);
         mainUI.revalidate();
     }
 

@@ -10,7 +10,6 @@ import com.hawolt.client.resources.ledge.parties.objects.CurrentParty;
 import com.hawolt.client.resources.ledge.parties.objects.PartiesRegistration;
 import com.hawolt.client.resources.ledge.parties.objects.PartyGameMode;
 import com.hawolt.client.resources.ledge.summoner.objects.Summoner;
-import com.hawolt.logger.Logger;
 import com.hawolt.rms.data.impl.payload.RiotMessageMessagePayload;
 import com.hawolt.rms.data.subject.service.IServiceMessageListener;
 import com.hawolt.rms.data.subject.service.RiotMessageServiceMessage;
@@ -32,6 +31,8 @@ import java.util.HashMap;
 public class PresenceManager implements PacketCallback, IServiceMessageListener<RiotMessageServiceMessage> {
     private final LeagueClientUI leagueClientUI;
     private final LeagueClient leagueClient;
+    private Presence currentPresence;
+    private String currentDefaultStatus;
 
     public PresenceManager(LeagueClientUI leagueClientUI) {
         this.leagueClientUI = leagueClientUI;
@@ -114,30 +115,6 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         return builder;
     }
 
-    public void setIdlePresence() {
-        leagueClient.getCachedValueOrElse(CacheType.PRESENCE_BUILDER, this::configure, Logger::error).ifPresent(builder -> {
-            builder.setGameStatus("outOfGame");
-            builder.setQueueId("");
-            builder.setGameMode("");
-            builder.setGameQueueType("");
-            builder.setPTY("");
-            //TODO investigate
-            //14.09.2023: not sent during Idle
-            //builder.setTimestamp("");
-            builder.setIsObservable("");
-            builder.setMapId("");
-            builder.setChampionId("");
-            builder.setIconOverride("");
-            String status = leagueClientUI.getHeader().getChatStatus();
-            set("default".equals(status) ? "chat" : status, builder.build());
-        });
-    }
-
-    private void set(String status, Presence presence) {
-        leagueClientUI.getLeagueClient().getXMPPClient().setCustomPresence(
-                status, leagueClientUI.getLeagueClient().getCachedValue(CacheType.CHAT_STATUS), presence
-        );
-    }
 
     @Override
     public void onPacket(RtmpPacket rtmpPacket, TypedObject typedObject) throws Exception {
@@ -156,15 +133,17 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         if (object == null) return;
         JSONObject payload = new JSONObject(Base64GZIP.unzipBase64(object.toString()));
         int queueId = payload.getInt("queueId");
-        Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
+        Presence.Builder builder = configure();
+        String status = leagueClientUI.getHeader().getSelectedStatus();
         builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
         builder.setGameMode(MapQueueId.getGameMode(queueId));
         builder.setQueueId(String.valueOf(queueId));
         builder.setGameStatus("championSelect");
         builder.setMapId(MapQueueId.getMapId(queueId));
-        String status = leagueClientUI.getLayoutManager().getHeader().getProfile().getSummoner().getStatus().getBoxStatus();
         if (status.equals("default")) status = "dnd";
-        leagueClient.getXMPPClient().setCustomPresence(status, leagueClient.getCachedValue(CacheType.CHAT_STATUS), builder.build());
+        currentDefaultStatus = "dnd";
+        currentPresence = builder.build();
+        set(status, currentPresence);
     }
 
     @Override
@@ -181,7 +160,7 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
                 if (gameMode == null) {
                     setIdlePresence();
                 } else if (!currentParty.isActivityLocked()) {
-                    setLobbyPresence(payload, "chat");
+                    setLobbyPresence(payload);
                 } else {
                     setQueuePresence();
                 }
@@ -204,22 +183,40 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
         }
     }
 
+
+    private void set(String status, Presence presence) {
+        leagueClientUI.getLeagueClient().getXMPPClient().setCustomPresence(
+                status, leagueClientUI.getLeagueClient().getCachedValue(CacheType.CHAT_STATUS), presence
+        );
+    }
+
+    public void setIdlePresence() throws Exception {
+        String status = leagueClientUI.getHeader().getSelectedStatus();
+        Presence.Builder builder = configure();
+        builder.setGameStatus("outOfGame");
+        currentDefaultStatus = "chat";
+        currentPresence = builder.build();
+        set("default".equals(status) ? "chat" : status, currentPresence);
+    }
+
     private void setQueuePresence() throws Exception {
         PartiesLedge partiesLedge = leagueClientUI.getLeagueClient().getLedge().getParties();
         PartiesRegistration registration = partiesLedge.getCurrentRegistration();
-        Presence.Builder builder = leagueClientUI.getLeagueClient().getCachedValue(CacheType.PRESENCE_BUILDER);
+        Presence.Builder builder = configure();
         int queueId = registration.getCurrentParty().getPartyGameMode().getQueueId();
         builder.setTimestamp(String.valueOf(System.currentTimeMillis()));
         builder.setGameMode(MapQueueId.getGameMode(queueId));
         builder.setGameQueueType(MapQueueId.getGameQueueType(queueId));
         builder.setGameStatus("inQueue");
         builder.setQueueId(String.valueOf(queueId));
-        String status = leagueClientUI.getHeader().getChatStatus();
-        set("default".equals(status) ? "dnd" : status, builder.build());
+        String status = leagueClientUI.getHeader().getSelectedStatus();
+        currentDefaultStatus = "dnd";
+        currentPresence = builder.build();
+        set("default".equals(status) ? "dnd" : status, currentPresence);
     }
 
-    private void setLobbyPresence(JSONObject payload, String type) throws Exception {
-        Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
+    private void setLobbyPresence(JSONObject payload) throws Exception {
+        Presence.Builder builder = configure();
         PartiesRegistration registration = new PartiesRegistration(payload.getJSONObject("player"));
         CurrentParty party = registration.getCurrentParty();
         PartyGameMode mode = party.getPartyGameMode();
@@ -251,13 +248,15 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
                         builder.setPTY(pty.toString());
                     }
                     builder.setQueueId(String.valueOf(mode.getQueueId()));
-                    String status = leagueClientUI.getHeader().getChatStatus();
-                    set("default".equals(status) ? type : status, builder.build());
+                    String status = leagueClientUI.getHeader().getSelectedStatus();
+                    currentDefaultStatus = "chat";
+                    currentPresence = builder.build();
+                    set("default".equals(status) ? "chat" : status, currentPresence);
                 });
     }
 
     private void setInGamePresence(JSONObject payload) throws Exception {
-        Presence.Builder builder = leagueClientUI.getLeagueClient().getCachedValue(CacheType.PRESENCE_BUILDER);
+        Presence.Builder builder = configure();
         String gameId = String.valueOf(payload.getLong("gameId"));
         String gameMode = payload.getString("gameMode");
         long summonerId = payload.getLong("summonerId");
@@ -282,8 +281,10 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
                     builder.setGameQueueType(data.getString("queueTypeName"));
                     builder.setQueueId(String.valueOf(data.getInt("gameQueueConfigId")));
                     builder.setMapId(String.valueOf(data.getInt("mapId")));
-                    String status = leagueClientUI.getHeader().getChatStatus();
-                    set("default".equals(status) ? "dnd" : status, builder.build());
+                    String status = leagueClientUI.getHeader().getSelectedStatus();
+                    currentDefaultStatus = "dnd";
+                    currentPresence = builder.build();
+                    set("default".equals(status) ? "dnd" : status, currentPresence);
                 });
     }
 
@@ -310,5 +311,11 @@ public class PresenceManager implements PacketCallback, IServiceMessageListener<
             }
         }
         return summoner;
+    }
+
+    public void changeStatus() throws Exception {
+        if (currentPresence == null || currentDefaultStatus == null) setIdlePresence();
+        String status = leagueClientUI.getHeader().getSelectedStatus();
+        set("default".equals(status) ? currentDefaultStatus : status, currentPresence);
     }
 }

@@ -1,11 +1,10 @@
 package com.hawolt.ui.chat.profile;
 
-import com.hawolt.client.LeagueClient;
-import com.hawolt.client.cache.CacheType;
+import com.hawolt.LeagueClientUI;
+import com.hawolt.async.presence.PresenceManager;
+import com.hawolt.logger.Logger;
 import com.hawolt.ui.generic.component.LComboBox;
 import com.hawolt.ui.generic.themes.ColorPalette;
-import com.hawolt.xmpp.core.VirtualRiotXMPPClient;
-import com.hawolt.xmpp.event.objects.presence.Presence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,38 +15,29 @@ import java.awt.*;
  **/
 
 public class ChatSidebarStatus extends JComponent {
-    LComboBox<ChatStatus> box;
-    private VirtualRiotXMPPClient xmppClient;
-    private LeagueClient leagueClient;
+    private final LComboBox<ChatStatus> box;
+    private PresenceManager manager;
 
     public ChatSidebarStatus() {
         this.setLayout(new BorderLayout());
         box = new LComboBox<>(ChatStatus.values());
         box.setBackground(ColorPalette.accentColor);
         box.setSelectedItem(ChatStatus.DEFAULT);
-        box.addItemListener(listener -> {
-            if (xmppClient == null) return;
-            Presence.Builder builder = leagueClient.getCachedValue(CacheType.PRESENCE_BUILDER);
-            String status = box.getItemAt(box.getSelectedIndex()).getStatus();
-            xmppClient.setCustomPresence(
-                    "default".equals(status) ? "chat" : status,
-                    leagueClient.getCachedValue(CacheType.CHAT_STATUS),
-                    builder.build()
-            );
-        });
+        box.addItemListener(listener -> LeagueClientUI.service.execute(() -> {
+            try {
+                manager.changeStatus();
+            } catch (Exception e) {
+                Logger.error(e);
+            }
+        }));
         this.add(box, BorderLayout.CENTER);
     }
 
-    public String getBoxStatus() {
+    public void setPresenceManager(PresenceManager manager) {
+        this.manager = manager;
+    }
+
+    public String getSelectedStatus() {
         return box.getItemAt(box.getSelectedIndex()).getStatus();
     }
-
-    public void setXMPPClient(VirtualRiotXMPPClient xmppClient) {
-        this.xmppClient = xmppClient;
-    }
-
-    public void setLeagueClient(LeagueClient leagueClient) {
-        this.leagueClient = leagueClient;
-    }
-
 }

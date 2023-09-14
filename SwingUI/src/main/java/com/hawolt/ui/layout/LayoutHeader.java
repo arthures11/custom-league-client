@@ -3,6 +3,7 @@ package com.hawolt.ui.layout;
 import com.hawolt.async.loader.ResourceLoader;
 import com.hawolt.client.LeagueClient;
 import com.hawolt.ui.chat.profile.ChatSidebarProfile;
+import com.hawolt.ui.chat.profile.ChatSidebarStatus;
 import com.hawolt.ui.generic.component.LFlatButton;
 import com.hawolt.ui.generic.component.LTextAlign;
 import com.hawolt.ui.generic.themes.ColorPalette;
@@ -125,7 +126,11 @@ public class LayoutHeader extends ChildUIComponent {
         return wallet;
     }
 
-    public String getChatStatus() {
-        return profile.getSummoner().getStatus().getBoxStatus();
+    public ChatSidebarStatus getChatSidebarStatus() {
+        return profile.getSummoner().getStatus();
+    }
+
+    public String getSelectedStatus() {
+        return profile.getSummoner().getStatus().getSelectedStatus();
     }
 }

@@ -4,6 +4,8 @@ import com.hawolt.ui.champselect.context.ChampSelectUtilityContext;
 import com.hawolt.ui.champselect.data.ActionObject;
 import com.hawolt.ui.champselect.data.ChampSelectPhase;
 import com.hawolt.ui.champselect.generic.impl.ChampSelectHeaderUI;
+import com.hawolt.util.audio.AudioEngine;
+import com.hawolt.util.audio.Sound;
 
 import java.util.Optional;
 
@@ -50,7 +52,13 @@ public class DraftChampSelectHeaderUI extends ChampSelectHeaderUI {
                     boolean pick = settingsContext.getActionSetMapping().get(settingsContext.getCurrentActionSetIndex())
                             .stream()
                             .anyMatch(o -> o.getActorCellId() == settingsContext.getLocalPlayerCellId() && !o.isCompleted());
-                    yield pick ? ChampSelectPhase.PICK : ChampSelectPhase.IDLE;
+
+                    if (pick) {
+                        AudioEngine.play(Sound.QUEUE_POP);
+                        yield ChampSelectPhase.PICK;
+                    } else {
+                        yield ChampSelectPhase.IDLE;
+                    }
                 }
             };
         }
